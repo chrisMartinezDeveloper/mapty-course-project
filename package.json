@@ -1,0 +1,18 @@
+{
+  "name": "mapty-portfolio",
+  "version": "1.0.0",
+  "description": "Mapty Portfolio Package",
+  "default": "portfolio/index.html",
+  "scripts": {
+    "start": "parcel portfolio/index.html",
+    "build": "parcel build portfolio/index.html --dist-dir ./dist"
+  },
+  "devDependencies": {
+    "parcel": "^2.4.1"
+  },
+  "dependencies": {
+    "leaflet": "^1.7.1"
+  },
+  "author": "Chris Martinez",
+  "license": "ISC"
+}
