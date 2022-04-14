@@ -5,7 +5,7 @@
   "default": "portfolio/index.html",
   "scripts": {
     "start": "parcel portfolio/index.html",
-    "build": "parcel build portfolio/index.html --dist-dir ./dist"
+    "build": "parcel build Portfolio/index.html --dist-dir ./dist"
   },
   "devDependencies": {
     "parcel": "^2.4.1"
