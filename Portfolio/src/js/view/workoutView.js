@@ -1,6 +1,11 @@
 import { fuchsia } from 'color-name';
 import leaflet from 'leaflet';
 import { MAP_ZOOM_LEVEL } from '../config';
+import xPNG from 'url:../../img/delete_icon.png';
+import { library, icon } from '@fortawesome/fontawesome-svg-core';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faXmark);
 
 // Elements
 const form = document.querySelector('.form');
@@ -74,9 +79,15 @@ class WorkoutView {
   }
 
   renderWorkout(workout) {
+    const xMark = icon(faXmark, {
+      classes: ['workout__delete-icon'],
+    }).html;
+    console.log(`TEST`);
+
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
       <h2 class="workout__title">${workout.discription}</h2>
+      ${xMark}
       <div class="workout__details">
         <span class="workout__icon">${
           workout.type === `running` ? `🏃‍♂️` : `🚴‍♀️`
@@ -94,7 +105,7 @@ class WorkoutView {
       html += `
       <div class="workout__details">
         <span class="workout__icon">⚡️</span>
-        <span class="workout__value">${workout.pace.toFixed(1)}</span>
+        <span class="workout__value">${workout.pace}</span>
         <span class="workout__unit">min/km</span>
       </div>
       <div class="workout__details">

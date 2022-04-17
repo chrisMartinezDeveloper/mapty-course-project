@@ -74,17 +74,20 @@ export const createNewWorkout = function (workoutData) {
     date: new Date(),
     id: (Date.now() + ``).slice(-10),
     type: workoutData.type,
-    distance: +workoutData.distance,
-    duration: +workoutData.duration,
+    distance: (+workoutData.distance).toFixed(2),
+    duration: (+workoutData.duration).toFixed(2),
     coords: [workoutData.latitude, workoutData.longitude],
     cadence: workoutData.type === 'running' ? workoutData.cadence : 0,
     elevation: workoutData.type === 'cycling' ? workoutData.elevation : 0,
-    pace: workoutData.duration / workoutData.distance,
-    speed: workoutData.distance / (workoutData.duration / 60),
+    pace: (+workoutData.duration / +workoutData.distance).toFixed(2),
+    speed: (+workoutData.distance / (+workoutData.duration / 60)).toFixed(2),
   };
 
   // prettier-ignore
-  state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(1)} on ${
+  console.log(state.workout.date.getDay())
+  state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(
+    1
+  )} on ${
     state.months[state.workout.date.getMonth()]
   } ${state.workout.date.getDay()}`;
 
@@ -111,3 +114,4 @@ const reset = function () {
   location.reload();
 };
 // reset();
+// console.log(`TEST`);
