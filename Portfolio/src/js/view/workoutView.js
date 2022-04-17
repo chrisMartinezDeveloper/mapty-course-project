@@ -1,7 +1,6 @@
 import { fuchsia } from 'color-name';
 import leaflet from 'leaflet';
 import { MAP_ZOOM_LEVEL } from '../config';
-import xPNG from 'url:../../img/delete_icon.png';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
