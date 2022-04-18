@@ -93,6 +93,13 @@ export const createNewWorkout = function (workoutData) {
   state.workouts.push(state.workout);
 };
 
+export const deleteWorkout = function (id) {
+  workouts.forEach((workout, i) => {
+    if (workout.id === id) workouts.splice(i);
+  });
+  console.log(workouts);
+};
+
 export const setLocalStorage = function () {
   // Browser provided API
   // Only to be used for small amounts of data

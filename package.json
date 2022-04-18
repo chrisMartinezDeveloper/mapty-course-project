@@ -2,7 +2,7 @@
   "name": "mapty-portfolio",
   "version": "1.0.0",
   "description": "Mapty Portfolio Package",
-  "source": "portfolio/index.html",
+  "default": "portfolio/index.html",
   "scripts": {
     "start": "parcel portfolio/index.html",
     "build": "parcel build Portfolio/index.html --dist-dir ./dist"

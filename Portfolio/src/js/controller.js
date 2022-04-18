@@ -42,6 +42,9 @@ const controlMoveToMarker = function (event) {
 
 const controlDeleteWorkout = function (event) {
   workoutView.deleteWorkout(event);
+  model.deleteWorkout(workoutView.getID(event));
+
+  workoutView.renderWorkouts(model.getWorkouts());
 };
 
 const init = function () {

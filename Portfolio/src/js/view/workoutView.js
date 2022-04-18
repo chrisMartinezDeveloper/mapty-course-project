@@ -1,5 +1,3 @@
-import { fuchsia } from 'color-name';
-import leaflet from 'leaflet';
 import { MAP_ZOOM_LEVEL } from '../config';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -163,8 +161,16 @@ class WorkoutView {
   }
 
   deleteWorkout(event) {
+    console.log(event.target.closest(`.workout`));
+    debugger;
     workout = event.target.closest(`.workout`);
-    containerWorkouts.removeChild(workout);
+    console.log(`1: `, workout);
+    containerWorkouts.removeChild();
+    console.log(1, containerWorkouts);
+  }
+
+  getID(event) {
+    return event.target.closest(`.workout`).dataset.id;
   }
 
   // Event Listeners
@@ -192,7 +198,6 @@ class WorkoutView {
 
   addHandlerMoveToWorkouts(handler) {
     containerWorkouts.addEventListener(`click`, function (event) {
-      console.log(event);
       handler(event);
     });
   }
@@ -200,7 +205,6 @@ class WorkoutView {
   addHandlerDeleteWorkout(handler) {
     document.querySelectorAll('.fa-xmark').forEach(icon => {
       icon.addEventListener('click', function (event) {
-        console.log(`TEST`);
         handler(event);
       });
     });
