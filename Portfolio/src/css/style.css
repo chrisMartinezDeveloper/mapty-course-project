@@ -95,6 +95,11 @@ a:visited {
   grid-column: -1 / -1;
 }
 
+.workout__delete-icon__hover {
+  height: 2rem;
+  grid-column: -1 / -1;
+}
+
 .workout__details {
   display: flex;
   align-items: baseline;

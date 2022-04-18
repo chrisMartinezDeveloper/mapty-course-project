@@ -40,10 +40,15 @@ const controlMoveToMarker = function (event) {
   workoutView.moveToPopup(event, model.getMap(), model.getWorkouts());
 };
 
+const controlDeleteWorkout = function (event) {
+  workoutView.deleteWorkout(event);
+};
+
 const init = function () {
   // Publisher/Subscriber method
   workoutView.addHandlerLoadMap(controlLoadMap);
   workoutView.addHandlerWorkoutSubmit(controlWorkoutSubmit);
   workoutView.addHandlerToggleInputType(controlToggleInputType);
+  workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
 };
 init();

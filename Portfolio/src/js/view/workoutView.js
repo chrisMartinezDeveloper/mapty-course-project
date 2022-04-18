@@ -78,15 +78,14 @@ class WorkoutView {
   }
 
   renderWorkout(workout) {
-    const xMark = icon(faXmark, {
+    const xIcon = icon(faXmark, {
       classes: ['workout__delete-icon'],
     }).html;
-    console.log(`TEST`);
 
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
       <h2 class="workout__title">${workout.discription}</h2>
-      ${xMark}
+      ${xIcon}
       <div class="workout__details">
         <span class="workout__icon">${
           workout.type === `running` ? `🏃‍♂️` : `🚴‍♀️`
@@ -163,6 +162,11 @@ class WorkoutView {
     });
   }
 
+  deleteWorkout(event) {
+    workout = event.target.closest(`.workout`);
+    containerWorkouts.removeChild(workout);
+  }
+
   // Event Listeners
   addHandlerLoadMap(handler) {
     window.addEventListener(`load`, handler);
@@ -188,7 +192,17 @@ class WorkoutView {
 
   addHandlerMoveToWorkouts(handler) {
     containerWorkouts.addEventListener(`click`, function (event) {
+      console.log(event);
       handler(event);
+    });
+  }
+
+  addHandlerDeleteWorkout(handler) {
+    document.querySelectorAll('.fa-xmark').forEach(icon => {
+      icon.addEventListener('click', function (event) {
+        console.log(`TEST`);
+        handler(event);
+      });
     });
   }
 }

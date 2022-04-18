@@ -84,7 +84,6 @@ export const createNewWorkout = function (workoutData) {
   };
 
   // prettier-ignore
-  console.log(state.workout.date.getDay())
   state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(
     1
   )} on ${

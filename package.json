@@ -2,13 +2,10 @@
   "name": "mapty-portfolio",
   "version": "1.0.0",
   "description": "Mapty Portfolio Package",
-  "default": "portfolio/index.html",
+  "source": "portfolio/index.html",
   "scripts": {
     "start": "parcel portfolio/index.html",
     "build": "parcel build Portfolio/index.html --dist-dir ./dist"
-  },
-  "devDependencies": {
-    "parcel": "^2.4.1"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -16,5 +13,8 @@
     "leaflet": "^1.7.1"
   },
   "author": "Chris Martinez",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.4.1"
+  }
 }
