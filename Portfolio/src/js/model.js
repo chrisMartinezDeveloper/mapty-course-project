@@ -88,16 +88,22 @@ export const createNewWorkout = function (workoutData) {
     1
   )} on ${
     state.months[state.workout.date.getMonth()]
-  } ${state.workout.date.getDay()}`;
+  } ${state.workout.date.getDate()}`;
 
   state.workouts.push(state.workout);
 };
 
 export const deleteWorkout = function (id) {
-  workouts.forEach((workout, i) => {
-    if (workout.id === id) workouts.splice(i);
+  console.log(state.workouts);
+  state.workouts.forEach((workout, i) => {
+    if (workout.id === id) {
+      state.workouts.splice(i, 1);
+    }
   });
-  console.log(workouts);
+  console.log(state.workouts);
+
+  localStorage.removeItem(`workouts`);
+  setLocalStorage();
 };
 
 export const setLocalStorage = function () {

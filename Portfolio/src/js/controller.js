@@ -41,10 +41,10 @@ const controlMoveToMarker = function (event) {
 };
 
 const controlDeleteWorkout = function (event) {
-  workoutView.deleteWorkout(event);
+  console.log(workoutView.getID(event));
+  console.log(model.getWorkouts());
+  workoutView.deleteWorkoutElement(event);
   model.deleteWorkout(workoutView.getID(event));
-
-  workoutView.renderWorkouts(model.getWorkouts());
 };
 
 const init = function () {

@@ -160,13 +160,10 @@ class WorkoutView {
     });
   }
 
-  deleteWorkout(event) {
-    console.log(event.target.closest(`.workout`));
-    debugger;
-    workout = event.target.closest(`.workout`);
-    console.log(`1: `, workout);
-    containerWorkouts.removeChild();
-    console.log(1, containerWorkouts);
+  deleteWorkoutElement(event) {
+    const workout = event.target.closest(`.workout`);
+
+    containerWorkouts.removeChild(workout);
   }
 
   getID(event) {
@@ -203,7 +200,7 @@ class WorkoutView {
   }
 
   addHandlerDeleteWorkout(handler) {
-    document.querySelectorAll('.fa-xmark').forEach(icon => {
+    [...document.querySelectorAll('.fa-xmark')].forEach(icon => {
       icon.addEventListener('click', function (event) {
         handler(event);
       });
