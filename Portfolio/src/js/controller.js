@@ -15,7 +15,8 @@ const controlLoadMap = async function () {
 
     model.getLocalStorage();
 
-    workoutView.renderWorkouts(model.getWorkouts());
+    await workoutView.renderWorkouts(model.getWorkouts());
+    workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
     workoutView.renderWorkoutMarkers(model.getMap(), model.getWorkouts());
   } catch (error) {
     console.error(`🔥 ${error}`);
@@ -26,14 +27,19 @@ const controlToggleInputType = function () {
   workoutView.toggleElevationField();
 };
 
-const controlWorkoutSubmit = function () {
-  model.createNewWorkout(workoutView.getWorkoutFormData());
+const controlWorkoutSubmit = async function () {
+  try {
+    model.createNewWorkout(workoutView.getWorkoutFormData());
 
-  workoutView.renderWorkout(model.getWorkout());
-  workoutView.renderWorkoutMarker(model.getMap(), model.getWorkout());
-  workoutView.hideForm();
+    await workoutView.renderWorkout(model.getWorkout());
+    workoutView.renderWorkoutMarker(model.getMap(), model.getWorkout());
+    workoutView.hideForm();
+    workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
 
-  model.setLocalStorage();
+    model.setLocalStorage();
+  } catch (error) {
+    console.error(`🔥 ${error}`);
+  }
 };
 
 const controlMoveToMarker = function (event) {
@@ -41,8 +47,6 @@ const controlMoveToMarker = function (event) {
 };
 
 const controlDeleteWorkout = function (event) {
-  console.log(workoutView.getID(event));
-  console.log(model.getWorkouts());
   workoutView.deleteWorkoutElement(event);
   model.deleteWorkout(workoutView.getID(event));
 };
@@ -52,6 +56,5 @@ const init = function () {
   workoutView.addHandlerLoadMap(controlLoadMap);
   workoutView.addHandlerWorkoutSubmit(controlWorkoutSubmit);
   workoutView.addHandlerToggleInputType(controlToggleInputType);
-  workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
 };
 init();

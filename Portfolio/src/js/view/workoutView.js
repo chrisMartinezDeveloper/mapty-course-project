@@ -44,10 +44,14 @@ class WorkoutView {
     inputCadence.closest(`.form__row`).classList.toggle(`form__row--hidden`);
   }
 
-  renderWorkouts(workouts) {
-    workouts.forEach(workout => {
-      this.renderWorkout(workout);
-    });
+  async renderWorkouts(workouts) {
+    try {
+      await workouts.forEach(workout => {
+        this.renderWorkout(workout);
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   renderWorkoutMarkers(map, workouts) {
@@ -75,12 +79,14 @@ class WorkoutView {
     return workoutData;
   }
 
-  renderWorkout(workout) {
-    const xIcon = icon(faXmark, {
-      classes: ['workout__delete-icon'],
-    }).html;
+  async renderWorkout(workout) {
+    try {
+      const xIcon = await icon(faXmark, {
+        classes: ['workout__delete-icon'],
+      }).html;
+      console.log(`Render Workout Successful`);
 
-    let html = `
+      let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
       <h2 class="workout__title">${workout.discription}</h2>
       ${xIcon}
@@ -97,8 +103,8 @@ class WorkoutView {
         <span class="workout__unit">min</span>
       </div>`;
 
-    if (workout.type === `running`)
-      html += `
+      if (workout.type === `running`)
+        html += `
       <div class="workout__details">
         <span class="workout__icon">⚡️</span>
         <span class="workout__value">${workout.pace}</span>
@@ -110,8 +116,8 @@ class WorkoutView {
         <span class="workout__unit">spm</span>
       </div>
     </li>`;
-    if (workout.type === `cycling`)
-      html += `
+      if (workout.type === `cycling`)
+        html += `
         <div class="workout__details">
             <span class="workout__icon">⚡️</span>
             <span class="workout__value">${workout.speed}</span>
@@ -124,7 +130,10 @@ class WorkoutView {
         </div>
         </li>`;
 
-    form.insertAdjacentHTML(`afterend`, html);
+      form.insertAdjacentHTML(`afterend`, html);
+    } catch (error) {
+      throw error;
+    }
   }
 
   renderWorkoutMarker(map, workout) {
@@ -146,7 +155,7 @@ class WorkoutView {
   }
 
   moveToPopup(event, map, workouts) {
-    const workoutEl = event.target.closest(`.workout`);
+    const workoutEl = event.target;
 
     if (!workoutEl) return;
 
@@ -162,6 +171,7 @@ class WorkoutView {
 
   deleteWorkoutElement(event) {
     const workout = event.target.closest(`.workout`);
+    console.log(workout.parentElement);
 
     containerWorkouts.removeChild(workout);
   }
@@ -200,7 +210,7 @@ class WorkoutView {
   }
 
   addHandlerDeleteWorkout(handler) {
-    [...document.querySelectorAll('.fa-xmark')].forEach(icon => {
+    document.querySelectorAll('.fa-xmark').forEach(icon => {
       icon.addEventListener('click', function (event) {
         handler(event);
       });
