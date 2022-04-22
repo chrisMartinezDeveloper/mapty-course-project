@@ -17,6 +17,7 @@ const controlLoadMap = async function () {
 
     await workoutView.renderWorkouts(model.getWorkouts());
     workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
+    workoutView.addHandlerEditWorkout(controlEditWorkout);
     workoutView.renderWorkoutMarkers(model.getMap(), model.getWorkouts());
   } catch (error) {
     console.error(`🔥 ${error}`);
@@ -29,13 +30,19 @@ const controlToggleInputType = function () {
 
 const controlWorkoutSubmit = async function () {
   try {
+    // Create workout in state
     model.createNewWorkout(workoutView.getWorkoutFormData());
 
+    // Render workout and marker
     await workoutView.renderWorkout(model.getWorkout());
     workoutView.renderWorkoutMarker(model.getMap(), model.getWorkout());
     workoutView.hideForm();
-    workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
 
+    // Event Listeners
+    workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
+    workoutView.addHandlerEditWorkout(controlEditWorkout);
+
+    // Set Local Storage
     model.setLocalStorage();
   } catch (error) {
     console.error(`🔥 ${error}`);
@@ -49,6 +56,10 @@ const controlMoveToMarker = function (event) {
 const controlDeleteWorkout = function (event) {
   workoutView.deleteWorkoutElement(event);
   model.deleteWorkout(workoutView.getID(event));
+};
+
+const controlEditWorkout = function (event) {
+  workoutView.renderEditView(event, model.getWorkouts());
 };
 
 const init = function () {
