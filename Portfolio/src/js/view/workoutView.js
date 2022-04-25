@@ -15,6 +15,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 class WorkoutView {
   #mapEvent;
+  #xIcon;
   #markers = {};
 
   _showForm(mapE) {
@@ -82,7 +83,7 @@ class WorkoutView {
 
   async renderWorkout(workout) {
     try {
-      const xIcon = await icon(faXmark, {
+      this.#xIcon = await icon(faXmark, {
         classes: ['workout__delete-icon'],
       }).html;
       // console.log(`Render Workout Successful`);
@@ -90,7 +91,7 @@ class WorkoutView {
       let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
       <h2 class="workout__title">${workout.discription}</h2>
-      ${xIcon}
+      ${this.#xIcon}
       <div class="workout__data">
         <div class="workout__details">
           <span class="workout__icon">${
@@ -317,10 +318,11 @@ class WorkoutView {
   updateWorkout(event, editedWorkout) {
     const workout = event.target.closest('.workout');
 
-    // Removes the editForm
-    event.target.remove();
+    workout.innerHTML = ``;
 
     let html = `
+    <h2 class="workout__title">${editedWorkout.discription}</h2>
+    ${this.#xIcon}
     <div class="workout__data">
       <div class="workout__details">
         <span class="workout__icon">${
@@ -373,6 +375,23 @@ class WorkoutView {
     `;
 
     workout.insertAdjacentHTML('beforeend', html);
+
+    this.#markers[editedWorkout.id]
+      .bindPopup(
+        L.popup({
+          maxwidth: 250,
+          minwidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: `${workout.type}-popup`,
+        })
+      )
+      .setPopupContent(
+        `${editedWorkout.type === `running` ? `🏃‍♂️` : `🚴‍♀️`} ${
+          editedWorkout.discription
+        }`
+      )
+      .openPopup();
   }
 
   // Event Listeners

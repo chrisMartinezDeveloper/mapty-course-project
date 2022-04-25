@@ -82,11 +82,10 @@ export const createNewWorkout = function (workoutData) {
     pace: +(workoutData.duration / workoutData.distance).toFixed(2),
     speed: +(workoutData.distance / (workoutData.duration / 60)).toFixed(2),
   };
+  console.log(state.workout);
 
   // prettier-ignore
-  state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(
-    1
-  )} on ${
+  state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(1)} on ${
     state.months[state.workout.date.getMonth()]
   } ${state.workout.date.getDate()}`;
 
@@ -119,6 +118,12 @@ export const editWorkout = function (editFormData) {
       +editFormData.distance /
       (editFormData.duration / 60)
     ).toFixed(2);
+
+  const parsedDescription = workout.discription;
+  workout.discription =
+    workout.type.slice(0, 1).toUpperCase() +
+    workout.type.slice(1) +
+    parsedDescription.slice(7);
 
   updateLocalStorage();
 
