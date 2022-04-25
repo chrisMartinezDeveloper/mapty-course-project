@@ -377,13 +377,14 @@ class WorkoutView {
     workout.insertAdjacentHTML('beforeend', html);
 
     this.#markers[editedWorkout.id]
+      .closePopup()
       .bindPopup(
         L.popup({
           maxwidth: 250,
           minwidth: 100,
           autoClose: false,
           closeOnClick: false,
-          className: `${workout.type}-popup`,
+          className: `${editedWorkout.type}-popup`,
         })
       )
       .setPopupContent(
