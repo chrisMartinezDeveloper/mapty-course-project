@@ -15,6 +15,7 @@ const inputElevation = document.querySelector('.form__input--elevation');
 
 class WorkoutView {
   #mapEvent;
+  #markers = {};
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
@@ -148,7 +149,10 @@ class WorkoutView {
   }
 
   renderWorkoutMarker(map, workout) {
-    L.marker(workout.coords)
+    if (!map) return;
+
+    const id = workout.id;
+    this.#markers[id] = L.marker(workout.coords)
       .addTo(map)
       .bindPopup(
         L.popup({
@@ -165,8 +169,11 @@ class WorkoutView {
       .openPopup();
   }
 
-  moveToPopup(event, map, workouts) {
-    const workoutEl = event.target;
+  moveToMarker(event, map, workouts) {
+    // If the xIcon is clicked, return
+    if (event.target.closest('.fa-xmark')) return;
+
+    const workoutEl = event.target.closest('.workout');
 
     if (!workoutEl) return;
 
@@ -180,27 +187,30 @@ class WorkoutView {
     });
   }
 
-  deleteWorkoutElement(event) {
-    const workout = event.target.closest(`.workout`);
+  removeMarker(map, workout) {
+    if (!map) return;
 
-    containerWorkouts.removeChild(workout);
+    const id = workout.id;
+    map.removeLayer(this.#markers[id]);
   }
 
-  getID(event) {
+  deleteWorkoutElement(event) {
+    event.target.closest(`.workout`).remove();
+  }
+
+  getElementID(event) {
     return event.target.closest(`.workout`).dataset.id;
   }
 
   renderEditView(event, workouts) {
-    console.log(workouts);
-
     const workoutElement = event.target.closest(`.workout`);
-    const workoutData = workoutElement.querySelector(`.workout__data`);
+    const workoutDataElement = workoutElement.querySelector(`.workout__data`);
     const btn = event.target.closest(`.btn__container`);
 
     const id = workoutElement.dataset.id;
     const workoutToEdit = workouts.find(wrkt => wrkt.id === id);
-    console.log(workoutToEdit);
 
+    // Create HTML for the editWorkoutForm
     let html = `
       <form class="form edit">
       <div class="form__row">
@@ -217,36 +227,37 @@ class WorkoutView {
       </div>
       <div class="form__row">
         <label class="form__label">Distance</label>
-        <input class="form__input form__input--distance" value="${
+        <input class="form__input form__input--distance" placeholder="km" value="${
           workoutToEdit.distance
         }" />
       </div>
       <div class="form__row">
         <label class="form__label">Duration</label>
         <input
-          class="form__input form__input--duration"
+          class="form__input form__input--duration" placeholder="min"
           value="${workoutToEdit.duration}"
         />
       </div>
     `;
+
     if (workoutToEdit.type === 'running')
       html += `
       <div class="form__row">
         <label class="form__label">Cadence</label>
         <input
-          class="form__input form__input--cadence"
+          class="form__input form__input--cadence" placeholder="step/min"
           value="${workoutToEdit.cadence}"
         />
       </div>
       <div class="form__row form__row--hidden">
         <label class="form__label">Elev Gain</label>
         <input
-          class="form__input form__input--elevation"
+          class="form__input form__input--elevation" placeholder="meters"
           value="${workoutToEdit.elevation}"
         />
       </div>
-      </form>
       `;
+
     if (workoutToEdit.type === 'cycling')
       html += `
       <div class="form__row form__row--hidden">
@@ -263,14 +274,20 @@ class WorkoutView {
           value="${workoutToEdit.elevation}"
         />
       </div>
-      </form>
       `;
 
-    // Delete workoutData and button, then add edit form
-    workoutElement.removeChild(workoutData);
+    html += `
+    <div class="form__row">
+      <input type="submit" class="btn submit"/>
+    </div>
+    </form>`;
+
+    // Delete workoutDataElement and button, then add edit form
+    workoutElement.removeChild(workoutDataElement);
     workoutElement.removeChild(btn);
     workoutElement.insertAdjacentHTML('beforeend', html);
 
+    // Add an event listener to a change in workout type
     workoutElement
       .querySelector('.form__input--type')
       .addEventListener('change', function () {
@@ -283,29 +300,79 @@ class WorkoutView {
           .closest(`.form__row`)
           .classList.toggle(`form__row--hidden`);
       });
+  }
 
-    console.log(workoutElement.querySelector('.edit'));
-    workoutElement
-      .querySelector('.edit')
-      .addEventListener('submit', function (event) {
-        event.preventDefault();
+  getEditFormData(event) {
+    const editForm = event.target.closest('.edit');
+    return {
+      id: editForm.closest('.workout').dataset.id,
+      type: editForm.querySelector('.form__input--type').value,
+      distance: +editForm.querySelector('.form__input--distance').value,
+      duration: +editForm.querySelector('.form__input--duration').value,
+      cadence: +editForm.querySelector('.form__input--cadence').value,
+      elevation: +editForm.querySelector('.form__input--elevation').value,
+    };
+  }
 
-        workoutToEdit = {
-          distance: +workoutElement.querySelector('.form__input--distance')
-            .value,
-          duration: +workoutElement.querySelector('.form__input--duration')
-            .value,
-          cadence:
-            workoutToEdit.type === 'running'
-              ? +workoutElement.querySelector('.form__input--duration').value
-              : 0,
-          distance:
-            workoutToEdit.type === 'cycling'
-              ? +workoutElement.querySelector('.form__input--duration').value
-              : 0,
-        };
-        console.log(workoutToEdit);
-      });
+  updateWorkout(event, editedWorkout) {
+    const workout = event.target.closest('.workout');
+
+    // Removes the editForm
+    event.target.remove();
+
+    let html = `
+    <div class="workout__data">
+      <div class="workout__details">
+        <span class="workout__icon">${
+          editedWorkout.type === `running` ? `🏃‍♂️` : `🚴‍♀️`
+        }</span>
+        <span class="workout__value">${editedWorkout.distance}</span>
+        <span class="workout__unit">km</span>
+      </div>
+      <div class="workout__details">
+        <span class="workout__icon">⏱</span>
+        <span class="workout__value">${editedWorkout.duration}</span>
+        <span class="workout__unit">min</span>
+      </div>
+    `;
+
+    if (editedWorkout.type === `running`)
+      html += `
+        <div class="workout__details">
+          <span class="workout__icon">⚡️</span>
+          <span class="workout__value">${editedWorkout.pace}</span>
+          <span class="workout__unit">min/km</span>
+        </div>
+        <div class="workout__details">
+          <span class="workout__icon">🦶🏼</span>
+          <span class="workout__value">${editedWorkout.cadence}</span>
+          <span class="workout__unit">spm</span>
+        </div>
+      </div>
+      `;
+
+    if (editedWorkout.type === `cycling`)
+      html += `
+        <div class="workout__details">
+            <span class="workout__icon">⚡️</span>
+            <span class="workout__value">${editedWorkout.speed}</span>
+            <span class="workout__unit">km/h</span>
+        </div>
+        <div class="workout__details">
+            <span class="workout__icon">⛰</span>
+            <span class="workout__value">${editedWorkout.elevation}</span>
+            <span class="workout__unit">m</span>
+        </div>
+      </div>
+      `;
+
+    html += `
+    <div class="btn__container">         
+        <button class="btn workout__edit">Edit</button>         
+    </div>
+    `;
+
+    workout.insertAdjacentHTML('beforeend', html);
   }
 
   // Event Listeners
@@ -348,6 +415,16 @@ class WorkoutView {
   addHandlerEditWorkout(handler) {
     document.querySelectorAll('.workout__edit').forEach(edit => {
       edit.addEventListener(`click`, function (event) {
+        handler(event);
+      });
+    });
+  }
+
+  addHandlerSubmitWorkoutEdits(handler) {
+    document.querySelectorAll('.edit').forEach(editForm => {
+      editForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+
         handler(event);
       });
     });

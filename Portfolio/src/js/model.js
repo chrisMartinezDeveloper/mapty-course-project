@@ -74,13 +74,13 @@ export const createNewWorkout = function (workoutData) {
     date: new Date(),
     id: (Date.now() + ``).slice(-10),
     type: workoutData.type,
-    distance: (+workoutData.distance).toFixed(2),
-    duration: (+workoutData.duration).toFixed(2),
+    distance: workoutData.distance.toFixed(2),
+    duration: workoutData.duration.toFixed(2),
     coords: [workoutData.latitude, workoutData.longitude],
     cadence: workoutData.type === 'running' ? workoutData.cadence : 0,
     elevation: workoutData.type === 'cycling' ? workoutData.elevation : 0,
-    pace: (+workoutData.duration / +workoutData.distance).toFixed(2),
-    speed: (+workoutData.distance / (+workoutData.duration / 60)).toFixed(2),
+    pace: +(workoutData.duration / workoutData.distance).toFixed(2),
+    speed: +(workoutData.distance / (workoutData.duration / 60)).toFixed(2),
   };
 
   // prettier-ignore
@@ -94,16 +94,39 @@ export const createNewWorkout = function (workoutData) {
 };
 
 export const deleteWorkout = function (id) {
-  console.log(state.workouts);
   state.workouts.forEach((workout, i) => {
     if (workout.id === id) {
       state.workouts.splice(i, 1);
     }
   });
-  console.log(state.workouts);
 
-  localStorage.removeItem(`workouts`);
-  setLocalStorage();
+  updateLocalStorage();
+};
+
+export const editWorkout = function (editFormData) {
+  const workout = state.workouts.find(wrkt => wrkt.id === editFormData.id);
+
+  workout.type =
+    workout.type === editFormData.type ? workout.type : editFormData.type;
+  workout.distance = editFormData.distance;
+  workout.duration = editFormData.duration;
+  workout.cadence = editFormData.cadence;
+  workout.elevation = editFormData.elevation;
+  if (editFormData.type === 'running')
+    workout.pace = +(editFormData.duration / editFormData.distance).toFixed(2);
+  if (editFormData.type === 'cycling')
+    workout.pace = +(
+      +editFormData.distance /
+      (editFormData.duration / 60)
+    ).toFixed(2);
+
+  updateLocalStorage();
+
+  return workout;
+};
+
+export const getCurrentWorkout = function (id) {
+  return state.workouts.find(wrkt => wrkt.id === id);
 };
 
 export const setLocalStorage = function () {
@@ -121,9 +144,7 @@ export const getLocalStorage = function () {
   state.workouts = data;
 };
 
-const reset = function () {
+const updateLocalStorage = function () {
   localStorage.removeItem(`workouts`);
-  location.reload();
+  setLocalStorage();
 };
-// reset();
-// console.log(`TEST`);

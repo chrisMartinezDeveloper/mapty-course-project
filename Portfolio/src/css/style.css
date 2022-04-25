@@ -112,13 +112,25 @@ a:visited {
 }
 
 .btn {
-  width: 50;
+  width: 11%;
   padding: 0.2rem 0.5rem 0.2rem 0.5rem;
   border-radius: 0.5rem;
   transition: ease-out 0.3s;
 }
 .btn:hover {
-  width: 58;
+  width: 13%;
+}
+
+.btn.submit {
+  width: 37%;
+  padding: 0.4rem 0.5rem 0.4rem 0.5rem;
+  margin: 0.5rem 0rem 0rem 0rem;
+  border-radius: 0.5rem;
+  transition: ease-out 0.3s;
+}
+
+.btn.submit:hover {
+  width: 42%;
 }
 
 .workout__icon {
@@ -151,13 +163,13 @@ a:visited {
   gap: 0.5rem 2.5rem;
 
   /* Match height and activity boxes */
-  height: 9.25rem;
+  height: 13rem;
   /* transition: all 0.5s, transform 1ms; */
   /* transition: ease-out 0.3s; */
 }
 
 .form.edit {
-  height: 6.9rem;
+  height: 9.5rem;
   grid-template-columns: -1fr;
   padding: 1rem 0rem 0rem 0rem;
   gap: 0.9rem 2.5rem;
