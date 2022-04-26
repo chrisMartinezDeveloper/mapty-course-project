@@ -81,8 +81,16 @@ class WorkoutView {
     return workoutData;
   }
 
-  displayInputErrorMessage() {
-    const btnSubmit = form.querySelector('.btnSubmit');
+  displayInputErrorMessage(event = undefined) {
+    let btnSubmit = form.querySelector('.btnSubmit');
+    if (event) {
+      btnSubmit = event.target.querySelector('.submit__edit');
+      // const workoutToEdit = event.target.closest('.workout');
+      const editForm = event.target;
+      editForm.style.height = '12.7rem';
+    }
+
+    if (document.querySelector('.input__error__message')) return;
 
     const html = `   
       <p class="input__error__message">Invalid Inputs: Please enter positive numbers only</p>
@@ -296,7 +304,7 @@ class WorkoutView {
       `;
 
     html += `
-    <div class="form__row">
+    <div class="form__row submit__edit">
       <input type="submit" class="btn submit"/>
     </div>
     </form>`;
@@ -330,6 +338,9 @@ class WorkoutView {
       duration: +editForm.querySelector('.form__input--duration').value,
       cadence: +editForm.querySelector('.form__input--cadence').value,
       elevation: +editForm.querySelector('.form__input--elevation').value,
+      getInputs() {
+        return [this.distance, this.duration, this.cadence, this.elevation];
+      },
     };
   }
 

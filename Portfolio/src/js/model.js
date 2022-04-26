@@ -64,10 +64,8 @@ export const getWorkout = () => state.workout;
 export const getWorkouts = () => state.workouts;
 
 export const createNewWorkout = function (workoutData) {
-  if (
-    !validInputs(workoutData.getInputs()) ||
-    !allPositive(workoutData.getInputs())
-  )
+  const inputs = workoutData.getInputs();
+  if (!validInputs(inputs) || !allPositive(inputs))
     throw new Error(`Invalid Inputs`);
 
   state.workout = {
@@ -102,6 +100,10 @@ export const deleteWorkout = function (id) {
 };
 
 export const editWorkout = function (editFormData) {
+  const inputs = editFormData.getInputs();
+  if (!validInputs(inputs) || !allPositive(inputs))
+    throw new Error(`Invalid Inputs`);
+
   const workout = state.workouts.find(wrkt => wrkt.id === editFormData.id);
 
   workout.type =

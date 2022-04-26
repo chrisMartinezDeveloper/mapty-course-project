@@ -81,15 +81,21 @@ const controlEditWorkout = function (event) {
 };
 
 const controlSubmitWorkoutEdits = function (event) {
-  // model.editWorkout() returns the editedWorkout
-  const editedWorkout = model.editWorkout(workoutView.getEditFormData(event));
+  try {
+    // model.editWorkout() returns the editedWorkout
+    const editedWorkout = model.editWorkout(workoutView.getEditFormData(event));
 
-  workoutView.updateWorkout(event, editedWorkout);
+    workoutView.updateWorkout(event, editedWorkout);
 
-  // Event Listeners
-  workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
-  // Allows the edit btn to be clicked after edits have been submitted
-  workoutView.addHandlerEditWorkout(controlEditWorkout);
+    // Event Listeners
+    workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
+    // Allows the edit btn to be clicked after edits have been submitted
+    workoutView.addHandlerEditWorkout(controlEditWorkout);
+  } catch (error) {
+    if (error.message === 'Invalid Inputs')
+      workoutView.displayInputErrorMessage(event);
+    console.error(`🔥 ${error}`);
+  }
 };
 
 const init = function () {
