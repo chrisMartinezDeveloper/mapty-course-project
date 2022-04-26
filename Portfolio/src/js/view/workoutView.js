@@ -83,6 +83,8 @@ class WorkoutView {
 
   displayInputErrorMessage(event = undefined) {
     let btnSubmit = form.querySelector('.btnSubmit');
+
+    // Triggered if imput error comes from the edit form
     if (event) {
       btnSubmit = event.target.querySelector('.submit__edit');
       // const workoutToEdit = event.target.closest('.workout');
@@ -90,6 +92,7 @@ class WorkoutView {
       editForm.style.height = '12.7rem';
     }
 
+    // Check if error is already created
     if (document.querySelector('.input__error__message')) return;
 
     const html = `   
@@ -231,6 +234,9 @@ class WorkoutView {
 
   renderEditView(event, workouts) {
     const workoutElement = event.target.closest(`.workout`);
+
+    if (!workoutElement) return;
+
     const workoutDataElement = workoutElement.querySelector(`.workout__data`);
     const btn = event.target.closest(`.btn__container`);
 
