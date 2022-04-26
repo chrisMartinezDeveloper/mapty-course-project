@@ -86,6 +86,8 @@ const controlSubmitWorkoutEdits = function (event) {
 
   workoutView.updateWorkout(event, editedWorkout);
 
+  // Event Listeners
+  workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
   // Allows the edit btn to be clicked after edits have been submitted
   workoutView.addHandlerEditWorkout(controlEditWorkout);
 };

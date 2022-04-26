@@ -93,7 +93,6 @@ class WorkoutView {
 
   clearInputErrorMessage() {
     const inputErrorMessage = form.querySelector('.input__error__message');
-    console.log(inputErrorMessage);
 
     if (!inputErrorMessage) return;
 
