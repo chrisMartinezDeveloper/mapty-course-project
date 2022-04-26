@@ -218,7 +218,7 @@ class WorkoutView {
   }
 
   removeMarker(map, workout) {
-    if (!map) return;
+    if (!map || !workout) return;
 
     const id = workout.id;
     map.removeLayer(this.#markers[id]);
@@ -337,6 +337,7 @@ class WorkoutView {
 
   getEditFormData(event) {
     const editForm = event.target.closest('.edit');
+
     return {
       id: editForm.closest('.workout').dataset.id,
       type: editForm.querySelector('.form__input--type').value,
@@ -420,6 +421,7 @@ class WorkoutView {
     // Rerenders the marker popup in the event of a workout type change
     this.#markers[editedWorkout.id]
       .closePopup()
+      .unbindPopup()
       .bindPopup(
         L.popup({
           maxwidth: 250,
