@@ -64,11 +64,11 @@ export const getWorkout = () => state.workout;
 export const getWorkouts = () => state.workouts;
 
 export const createNewWorkout = function (workoutData) {
-  // if (
-  //   !validInputs(workoutData.getInputs()) ||
-  //   !allPositive(workoutData.getInputs())
-  // )
-  //   return new Error(`Invalid Inputs`);
+  if (
+    !validInputs(workoutData.getInputs()) ||
+    !allPositive(workoutData.getInputs())
+  )
+    throw new Error(`Invalid Inputs`);
 
   state.workout = {
     date: new Date(),
@@ -82,7 +82,6 @@ export const createNewWorkout = function (workoutData) {
     pace: +(workoutData.duration / workoutData.distance).toFixed(2),
     speed: +(workoutData.distance / (workoutData.duration / 60)).toFixed(2),
   };
-  console.log(state.workout);
 
   // prettier-ignore
   state.workout.discription = `${workoutData.type[0].toUpperCase()}${workoutData.type.slice(1)} on ${

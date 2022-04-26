@@ -37,6 +37,9 @@ const controlToggleInputType = function () {
 
 const controlSubmitWorkout = async function () {
   try {
+    // Clear error message, if any
+    workoutView.clearInputErrorMessage();
+
     // Create workout in state
     model.createNewWorkout(workoutView.getWorkoutFormData());
 
@@ -52,6 +55,8 @@ const controlSubmitWorkout = async function () {
     // Set Local Storage
     model.setLocalStorage();
   } catch (error) {
+    if (error.message === 'Invalid Inputs')
+      workoutView.displayInputErrorMessage();
     console.error(`🔥 ${error}`);
   }
 };

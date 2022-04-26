@@ -81,6 +81,25 @@ class WorkoutView {
     return workoutData;
   }
 
+  displayInputErrorMessage() {
+    const btnSubmit = form.querySelector('.btnSubmit');
+
+    const html = `   
+      <p class="input__error__message">Invalid Inputs: Please enter positive numbers only</p>
+    `;
+
+    btnSubmit.insertAdjacentHTML('beforebegin', html);
+  }
+
+  clearInputErrorMessage() {
+    const inputErrorMessage = form.querySelector('.input__error__message');
+    console.log(inputErrorMessage);
+
+    if (!inputErrorMessage) return;
+
+    inputErrorMessage.remove();
+  }
+
   async renderWorkout(workout) {
     try {
       this.#xIcon = await icon(faXmark, {
@@ -143,7 +162,7 @@ class WorkoutView {
       </li>
       `;
 
-      form.insertAdjacentHTML(`afterend`, html);
+      form.insertAdjacentHTML('afterend', html);
     } catch (error) {
       throw error;
     }
@@ -374,8 +393,15 @@ class WorkoutView {
     </div>
     `;
 
+    editedWorkout.type === 'running'
+      ? workout.classList.remove('workout--cycling')
+      : workout.classList.remove('workout--running');
+
+    workout.classList.add(`workout--${editedWorkout.type}`);
+
     workout.insertAdjacentHTML('beforeend', html);
 
+    // Rerenders the marker popup in the event of a workout type change
     this.#markers[editedWorkout.id]
       .closePopup()
       .bindPopup(
