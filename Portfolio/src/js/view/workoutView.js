@@ -252,7 +252,6 @@ class WorkoutView {
   // Renders the edit view for a given workout
   renderEditView(event, workouts) {
     const workoutElement = event.target.closest(`.workout`);
-
     if (!workoutElement) return;
 
     const workoutDataElement = workoutElement.querySelector(`.workout__data`);
@@ -354,16 +353,18 @@ class WorkoutView {
   }
 
   // Gets the data from the given edit form
-  getEditFormData(event) {
-    const editForm = event.target.closest('.edit');
+  getEditFormData(editFormElement) {
+    console.log('Get Edit Form Data:', editFormElement);
+    // if (!editFormElement) return;
 
     return {
-      id: editForm.closest('.workout')?.dataset.id,
-      type: editForm?.querySelector('.form__input--type')?.value,
-      distance: +editForm.querySelector('.form__input--distance').value,
-      duration: +editForm.querySelector('.form__input--duration').value,
-      cadence: +editForm.querySelector('.form__input--cadence').value,
-      elevation: +editForm.querySelector('.form__input--elevation').value,
+      id: editFormElement.closest('.workout').dataset.id,
+      type: editFormElement.querySelector('.form__input--type').value,
+      distance: +editFormElement.querySelector('.form__input--distance').value,
+      duration: +editFormElement.querySelector('.form__input--duration').value,
+      cadence: +editFormElement.querySelector('.form__input--cadence').value,
+      elevation: +editFormElement.querySelector('.form__input--elevation')
+        .value,
       getInputs() {
         return [this.distance, this.duration, this.cadence, this.elevation];
       },
@@ -371,10 +372,8 @@ class WorkoutView {
   }
 
   // Updates the given workout with the given edits
-  updateWorkout(event, editedWorkout) {
-    const workout = event.target.closest('.workout');
-
-    workout.innerHTML = ``;
+  updateWorkout(workoutElement, editedWorkout) {
+    workoutElement.innerHTML = ``;
 
     let html = `
     <h2 class="workout__title">${editedWorkout.discription}</h2>
@@ -431,12 +430,12 @@ class WorkoutView {
     `;
 
     editedWorkout.type === 'running'
-      ? workout.classList.remove('workout--cycling')
-      : workout.classList.remove('workout--running');
+      ? workoutElement.classList.remove('workout--cycling')
+      : workoutElement.classList.remove('workout--running');
 
-    workout.classList.add(`workout--${editedWorkout.type}`);
+    workoutElement.classList.add(`workout--${editedWorkout.type}`);
 
-    workout.insertAdjacentHTML('beforeend', html);
+    workoutElement.insertAdjacentHTML('beforeend', html);
 
     // Rerenders the marker popup in the event of a workout type change
     this.#markers[editedWorkout.id]
@@ -504,23 +503,45 @@ class WorkoutView {
     });
   }
 
-  // Handles editing the workout UI
-  addHandlerEditWorkout(handler) {
-    document.querySelectorAll('.workout__edit').forEach(edit => {
-      edit.addEventListener(`click`, function (event) {
-        handler(event);
+  // Handles editing the workouts' UI on page load
+  addHandlerEditWorkouts(handler) {
+    document.querySelectorAll('.workout__edit').forEach(editBtn => {
+      editBtn.addEventListener(`click`, function (event) {
+        const workoutElement = event.path[2];
+        handler(event, workoutElement);
       });
     });
   }
 
-  // Handles submitting the given workout edits
-  addHandlerSubmitWorkoutEdits(handler) {
-    document.querySelectorAll('.edit').forEach(editForm => {
-      editForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        handler(event);
+  // Handles editing the workout UI
+  addHandlerNewWorkoutEdit(handler) {
+    console.log(document.querySelector('.workout__edit'));
+    document
+      .querySelector('.workout__edit')
+      .addEventListener(`click`, function (event) {
+        const workoutElement = event.path[2];
+        handler(event, workoutElement);
       });
+  }
+
+  // Handles editing the workout UI
+  addHandlerEditWorkout(handler, workoutElement) {
+    workoutElement
+      .querySelector('.workout__edit')
+      .addEventListener(`click`, function (event) {
+        const workoutElement = event.path[2];
+        handler(event, workoutElement);
+      });
+  }
+
+  // Handles submitting the given workout edits
+  addHandlerSubmitWorkoutEdits(handler, workoutElement) {
+    const editFormElement = workoutElement.querySelector('.edit');
+
+    editFormElement.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      handler(event, workoutElement, editFormElement);
     });
   }
 }

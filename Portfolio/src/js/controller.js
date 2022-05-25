@@ -2,9 +2,9 @@ import * as model from './model';
 import workoutView from './view/workoutView';
 
 // Dev controls - maintains state between reloads
-// if (module.hot) {
-//   module.hot.accept();
-// }
+if (module.hot) {
+  module.hot.accept();
+}
 
 /////////////////////////
 // Controller functions
@@ -26,7 +26,7 @@ const controlLoadMap = async function () {
 
     // Event Listeners
     workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
-    workoutView.addHandlerEditWorkout(controlEditWorkout);
+    workoutView.addHandlerEditWorkouts(controlEditWorkout);
 
     // Renders the workout marker
     workoutView.renderWorkoutMarkers(model.getMap(), model.getWorkouts());
@@ -56,7 +56,7 @@ const controlSubmitWorkout = async function () {
 
     // Event Listeners
     workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
-    workoutView.addHandlerEditWorkout(controlEditWorkout);
+    workoutView.addHandlerNewWorkoutEdit(controlEditWorkout);
 
     // Set Local Storage
     model.setLocalStorage();
@@ -81,24 +81,35 @@ const controlDeleteWorkout = function (event) {
   model.deleteWorkout(workoutView.getElementID(event));
 };
 
-const controlEditWorkout = function (event) {
+const controlEditWorkout = function (event, workoutElement) {
+  console.log('---');
+  console.log('Edit Workout');
+
   workoutView.renderEditView(event, model.getWorkouts());
 
-  workoutView.addHandlerSubmitWorkoutEdits(controlSubmitWorkoutEdits);
+  workoutView.addHandlerSubmitWorkoutEdits(
+    controlSubmitWorkoutEdits,
+    workoutElement
+  );
 };
 
 // Controls submitting edits to the workout
-const controlSubmitWorkoutEdits = function (event) {
+const controlSubmitWorkoutEdits = function (
+  event,
+  workoutElement,
+  editFormElement
+) {
   try {
     // model.editWorkout() returns the editedWorkout
-    const editedWorkout = model.editWorkout(workoutView.getEditFormData(event));
+    const editFormData = workoutView.getEditFormData(editFormElement);
+    const editedWorkout = model.editWorkout(editFormData);
 
-    workoutView.updateWorkout(event, editedWorkout);
+    workoutView.updateWorkout(workoutElement, editedWorkout);
 
     // Event Listeners
     workoutView.addHandlerDeleteWorkout(controlDeleteWorkout);
     // Allows the edit btn to be clicked after edits have been submitted
-    workoutView.addHandlerEditWorkout(controlEditWorkout);
+    workoutView.addHandlerEditWorkout(controlEditWorkout, workoutElement);
   } catch (error) {
     if (error.message === 'Invalid Inputs')
       workoutView.displayInputErrorMessage(event);
