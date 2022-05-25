@@ -502,7 +502,7 @@ class WorkoutView {
     });
   }
 
-  // Handles editing the workouts' UI on page load
+  // Handles listening for edit clicks on the workouts' UI on page load
   addHandlerEditWorkouts(handler) {
     document.querySelectorAll('.workout__edit').forEach(editBtn => {
       editBtn.addEventListener(`click`, function (event) {
@@ -512,7 +512,7 @@ class WorkoutView {
     });
   }
 
-  // Handles editing the workout UI
+  // Handles adding edit listener to new workout UIs
   addHandlerNewWorkoutEdit(handler) {
     document
       .querySelector('.workout__edit')
@@ -522,7 +522,7 @@ class WorkoutView {
       });
   }
 
-  // Handles editing the workout UI
+  // Handles adding new edit listener to the workout UI after submitting edits
   addHandlerEditWorkout(handler, workoutElement) {
     workoutElement
       .querySelector('.workout__edit')
