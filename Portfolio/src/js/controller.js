@@ -1,11 +1,15 @@
 import * as model from './model';
 import workoutView from './view/workoutView';
 
-// Maintains state between reloads
-if (module.hot) {
-  module.hot.accept();
-}
+// Dev controls - maintains state between reloads
+// if (module.hot) {
+//   module.hot.accept();
+// }
 
+/////////////////////////
+// Controller functions
+
+// Controls loading the map from the Leaflet API
 const controlLoadMap = async function () {
   try {
     // Loads the map
@@ -17,7 +21,7 @@ const controlLoadMap = async function () {
     // Gets local storage
     model.getLocalStorage();
 
-    // Awaiting the FontAwsome xIcon loading
+    // Awaiting the FontAwesome xIcon loading
     await workoutView.renderWorkouts(model.getWorkouts());
 
     // Event Listeners
@@ -31,10 +35,12 @@ const controlLoadMap = async function () {
   }
 };
 
+// Controls toggling the workout form input type
 const controlToggleInputType = function () {
   workoutView.toggleElevationField();
 };
 
+// Controls submitting the workout form
 const controlSubmitWorkout = async function () {
   try {
     // Clear error message, if any
@@ -61,6 +67,7 @@ const controlSubmitWorkout = async function () {
   }
 };
 
+// Controls moving the map view to the workout clicked by the user
 const controlMoveToMarker = function (event) {
   workoutView.moveToMarker(event, model.getMap(), model.getWorkouts());
 };
@@ -80,6 +87,7 @@ const controlEditWorkout = function (event) {
   workoutView.addHandlerSubmitWorkoutEdits(controlSubmitWorkoutEdits);
 };
 
+// Controls submitting edits to the workout
 const controlSubmitWorkoutEdits = function (event) {
   try {
     // model.editWorkout() returns the editedWorkout
@@ -98,8 +106,15 @@ const controlSubmitWorkoutEdits = function (event) {
   }
 };
 
+// Welcomes a dev to the application
+const welcome = function () {
+  console.log('Welcome to the application!');
+};
+
+// Initializes the application
 const init = function () {
   // Publisher/Subscriber method
+  welcome();
   workoutView.addHandlerLoadMap(controlLoadMap);
   workoutView.addHandlerWorkoutSubmit(controlSubmitWorkout);
   workoutView.addHandlerToggleInputType(controlToggleInputType);

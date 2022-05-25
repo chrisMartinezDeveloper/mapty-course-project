@@ -1,9 +1,9 @@
 import { MAP_ZOOM_LEVEL } from '../config';
 import { library, icon } from '@fortawesome/fontawesome-svg-core';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
-
 library.add(faXmark);
 
+/////////////
 // Elements
 const form = document.querySelector('.form');
 const containerWorkouts = document.querySelector('.workouts');
@@ -14,9 +14,14 @@ const inputCadence = document.querySelector('.form__input--cadence');
 const inputElevation = document.querySelector('.form__input--elevation');
 
 class WorkoutView {
+  //////////////////////
+  // Private variables
   #mapEvent;
   #xIcon;
   #markers = {};
+
+  //////////////////////
+  // Private Functions
 
   _showForm(mapE) {
     this.#mapEvent = mapE;
@@ -27,6 +32,7 @@ class WorkoutView {
   ////////
   // API
 
+  // Hides the workout form
   hideForm() {
     // Empty the imputs
     inputDistance.value =
@@ -41,11 +47,13 @@ class WorkoutView {
     setTimeout(() => (form.style.display = `grid`), 1000);
   }
 
+  // Toggles the cadence and elevation fields depending on the input type
   toggleElevationField() {
     inputElevation.closest(`.form__row`).classList.toggle(`form__row--hidden`);
     inputCadence.closest(`.form__row`).classList.toggle(`form__row--hidden`);
   }
 
+  // Renders all the workouts
   async renderWorkouts(workouts) {
     try {
       await workouts.forEach(workout => {
@@ -56,12 +64,14 @@ class WorkoutView {
     }
   }
 
+  // Renders all the workout markers
   renderWorkoutMarkers(map, workouts) {
     workouts.forEach(workout => {
       this.renderWorkoutMarker(map, workout);
     });
   }
 
+  // Gets the data from the workout form
   getWorkoutFormData() {
     const mapE = this.#mapEvent;
     const workoutData = {
@@ -81,10 +91,11 @@ class WorkoutView {
     return workoutData;
   }
 
+  // Displays an error when the user inputs invalid data
   displayInputErrorMessage(event = undefined) {
     let btnSubmit = form.querySelector('.btnSubmit');
 
-    // Triggered if imput error comes from the edit form
+    // Triggered if input error comes from the edit form
     if (event) {
       btnSubmit = event.target.querySelector('.submit__edit');
       // const workoutToEdit = event.target.closest('.workout');
@@ -102,6 +113,7 @@ class WorkoutView {
     btnSubmit.insertAdjacentHTML('beforebegin', html);
   }
 
+  // Clears the input error message
   clearInputErrorMessage() {
     const inputErrorMessage = form.querySelector('.input__error__message');
 
@@ -178,6 +190,7 @@ class WorkoutView {
     }
   }
 
+  // Renders a given workout marker
   renderWorkoutMarker(map, workout) {
     if (!map) return;
 
@@ -199,6 +212,7 @@ class WorkoutView {
       .openPopup();
   }
 
+  // Moves to the workout the user clicked on
   moveToMarker(event, map, workouts) {
     // If the xIcon is clicked, return
     if (event.target.closest('.fa-xmark')) return;
@@ -217,6 +231,7 @@ class WorkoutView {
     });
   }
 
+  // Renders the marker associated with the given workout
   removeMarker(map, workout) {
     if (!map || !workout) return;
 
@@ -224,14 +239,17 @@ class WorkoutView {
     map.removeLayer(this.#markers[id]);
   }
 
+  // Removes a given workout from the workouts container
   deleteWorkoutElement(event) {
     event.target.closest(`.workout`).remove();
   }
 
+  // Gets the ID from the given workout element
   getElementID(event) {
     return event.target.closest(`.workout`).dataset.id;
   }
 
+  // Renders the edit view for a given workout
   renderEditView(event, workouts) {
     const workoutElement = event.target.closest(`.workout`);
 
@@ -335,12 +353,13 @@ class WorkoutView {
       });
   }
 
+  // Gets the data from the given edit form
   getEditFormData(event) {
     const editForm = event.target.closest('.edit');
 
     return {
-      id: editForm.closest('.workout').dataset.id,
-      type: editForm.querySelector('.form__input--type').value,
+      id: editForm.closest('.workout')?.dataset.id,
+      type: editForm?.querySelector('.form__input--type')?.value,
       distance: +editForm.querySelector('.form__input--distance').value,
       duration: +editForm.querySelector('.form__input--duration').value,
       cadence: +editForm.querySelector('.form__input--cadence').value,
@@ -351,6 +370,7 @@ class WorkoutView {
     };
   }
 
+  // Updates the given workout with the given edits
   updateWorkout(event, editedWorkout) {
     const workout = event.target.closest('.workout');
 
@@ -439,19 +459,25 @@ class WorkoutView {
       .openPopup();
   }
 
+  ////////////////////
   // Event Listeners
+
+  // Handles the map once it is loaded
   addHandlerLoadMap(handler) {
     window.addEventListener(`load`, handler);
   }
 
+  // Handles a click on the map
   addHandlerMapClick(map) {
     map.on(`click`, this._showForm.bind(this));
   }
 
+  // Handles when the user changes the input type
   addHandlerToggleInputType(handler) {
     inputType.addEventListener(`change`, handler);
   }
 
+  // Handles when a workout form is submitted
   addHandlerWorkoutSubmit(handler) {
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -462,12 +488,14 @@ class WorkoutView {
     });
   }
 
+  // Handles moving to the workout the user clicks on
   addHandlerMoveToWorkouts(handler) {
     containerWorkouts.addEventListener(`click`, function (event) {
       handler(event);
     });
   }
 
+  // Handles deleting a workout from the workouts container
   addHandlerDeleteWorkout(handler) {
     document.querySelectorAll('.fa-xmark').forEach(icon => {
       icon.addEventListener('click', function (event) {
@@ -476,6 +504,7 @@ class WorkoutView {
     });
   }
 
+  // Handles editing the workout UI
   addHandlerEditWorkout(handler) {
     document.querySelectorAll('.workout__edit').forEach(edit => {
       edit.addEventListener(`click`, function (event) {
@@ -484,6 +513,7 @@ class WorkoutView {
     });
   }
 
+  // Handles submitting the given workout edits
   addHandlerSubmitWorkoutEdits(handler) {
     document.querySelectorAll('.edit').forEach(editForm => {
       editForm.addEventListener('submit', function (event) {
@@ -495,4 +525,5 @@ class WorkoutView {
   }
 }
 
+// Connects the View to the Controller
 export default new WorkoutView();

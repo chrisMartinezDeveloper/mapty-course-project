@@ -1,6 +1,6 @@
 'use strict';
 
-////////////////////////
+////////////
 // Classes
 class Workout {
   date = new Date();

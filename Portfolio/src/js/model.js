@@ -2,6 +2,9 @@ import leaflet from 'leaflet';
 import { MAP_ZOOM_LEVEL } from './config';
 import { validInputs, allPositive } from './helpers';
 
+//////////
+// State
+
 const state = {
   latitude: 0,
   longitude: 0,
@@ -34,6 +37,7 @@ const state = {
 //     });
 // };
 
+// Loads the map from the Leaflet Library
 export const loadMap = async function (position) {
   try {
     // From JS Course
@@ -57,12 +61,16 @@ export const loadMap = async function (position) {
   }
 };
 
+// Gets the map from the state
 export const getMap = () => state.map;
 
+// Gets the current workout from the state
 export const getWorkout = () => state.workout;
 
+// Gets all the workouts from the state
 export const getWorkouts = () => state.workouts;
 
+// Create a new user defined workout
 export const createNewWorkout = function (workoutData) {
   const inputs = workoutData.getInputs();
   if (!validInputs(inputs) || !allPositive(inputs))
@@ -89,6 +97,7 @@ export const createNewWorkout = function (workoutData) {
   state.workouts.push(state.workout);
 };
 
+// Deletes the given workout
 export const deleteWorkout = function (id) {
   state.workouts.forEach((workout, i) => {
     if (workout.id === id) {
@@ -99,6 +108,7 @@ export const deleteWorkout = function (id) {
   updateLocalStorage();
 };
 
+// Makes user requested edits to the given workout
 export const editWorkout = function (editFormData) {
   const inputs = editFormData.getInputs();
   if (!validInputs(inputs) || !allPositive(inputs))
@@ -131,10 +141,12 @@ export const editWorkout = function (editFormData) {
   return workout;
 };
 
+// Gets the current workout
 export const getCurrentWorkout = function (id) {
   return state.workouts.find(wrkt => wrkt.id === id);
 };
 
+// Saves the workouts to local storage
 export const setLocalStorage = function () {
   // Browser provided API
   // Only to be used for small amounts of data
@@ -142,6 +154,7 @@ export const setLocalStorage = function () {
   localStorage.setItem(`workouts`, JSON.stringify(state.workouts));
 };
 
+// Gets the workouts from local storage
 export const getLocalStorage = function () {
   const data = JSON.parse(localStorage.getItem(`workouts`));
 
@@ -150,6 +163,7 @@ export const getLocalStorage = function () {
   state.workouts = data;
 };
 
+// Updates local storage
 const updateLocalStorage = function () {
   localStorage.removeItem(`workouts`);
   setLocalStorage();
