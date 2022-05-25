@@ -354,8 +354,7 @@ class WorkoutView {
 
   // Gets the data from the given edit form
   getEditFormData(editFormElement) {
-    console.log('Get Edit Form Data:', editFormElement);
-    // if (!editFormElement) return;
+    if (!editFormElement) return;
 
     return {
       id: editFormElement.closest('.workout').dataset.id,
@@ -515,7 +514,6 @@ class WorkoutView {
 
   // Handles editing the workout UI
   addHandlerNewWorkoutEdit(handler) {
-    console.log(document.querySelector('.workout__edit'));
     document
       .querySelector('.workout__edit')
       .addEventListener(`click`, function (event) {

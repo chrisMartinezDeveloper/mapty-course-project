@@ -82,9 +82,6 @@ const controlDeleteWorkout = function (event) {
 };
 
 const controlEditWorkout = function (event, workoutElement) {
-  console.log('---');
-  console.log('Edit Workout');
-
   workoutView.renderEditView(event, model.getWorkouts());
 
   workoutView.addHandlerSubmitWorkoutEdits(
