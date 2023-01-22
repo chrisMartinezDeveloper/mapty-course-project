@@ -5,4 +5,6 @@
 
 # Development Stack
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=chrisMartinezDeveloper&repo=mapty-course-project&layout=compact&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
+https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
+https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white
+https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
