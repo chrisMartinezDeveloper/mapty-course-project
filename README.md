@@ -1,7 +1,8 @@
 # Mapty Project
 
+- Used a HTML template to code the entirety of the JavaScript
 - Udemy Course Project - [The Complete JavaScript Course 2023](https://www.udemy.com/course/the-complete-javascript-course/)
-- Coded the entirety of the JavaScript from a HTML template
+- Course Instructor - Jonas Schmedtmann
 
 # Development Stack 📚
 
