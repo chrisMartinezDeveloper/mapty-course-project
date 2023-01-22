@@ -1,6 +1,6 @@
 # Mapty Project
 
-- [Udemy Course Project](https://www.udemy.com/course/the-complete-javascript-course/)
+- Udemy Course Project - [The Complete JavaScript Course 2023](https://www.udemy.com/course/the-complete-javascript-course/)
 - Coded the entirety of the JavaScript from a HTML template
 
 # Development Stack 📚
