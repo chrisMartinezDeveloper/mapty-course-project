@@ -1,3 +1,8 @@
 # Mapty Project
 
-Workout application with custom workout data.
+- JavaScript Udemy course project
+- Coded the JavaScript from scratch from a HTML template
+
+# Development Stack
+
+
