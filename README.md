@@ -2,6 +2,7 @@
 
 - Used a HTML template to code all the JavaScript
 - Udemy Course Project - 
+
 <a href="https://www.udemy.com/course/the-complete-javascript-course/" target="_blank">The Complete JavaScript Course 2023</a>
 - Course Instructor - Jonas Schmedtmann
 
