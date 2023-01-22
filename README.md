@@ -1,7 +1,7 @@
 # Mapty Project
 
 - [Udemy Course Project](https://www.udemy.com/course/the-complete-javascript-course/)
-- Coded the JavaScript from scratch from a HTML template
+- Coded the entirety of the JavaScript from a HTML template
 
 # Development Stack 📚
 
