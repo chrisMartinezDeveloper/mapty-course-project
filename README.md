@@ -5,5 +5,5 @@
 
 # Development Stack
 
-[![](https://github-readme-stats.vercel.app/api/top-langs/?username=chrisMartinezDeveloper&layout=compact&theme=gotham)]( https://api.github.com/repos/chrisMartinezDeveloper/mapty-course-project/stats/code_frequency)
+[![](https://api.github.com/repos/chrisMartinezDeveloper/mapty-course-project/stats/code_frequency&layout=compact&theme=gotham)]
 
