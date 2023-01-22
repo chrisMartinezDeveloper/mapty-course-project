@@ -1,6 +1,6 @@
 # Mapty Project
 
-- JavaScript Udemy course project
+- Udemy Course Project - [https://www.udemy.com/course/100-days-of-code/](🔗)
 - Coded the JavaScript from scratch from a HTML template
 
 # Development Stack 📚
