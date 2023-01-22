@@ -5,6 +5,5 @@
 
 # Development Stack
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=chrisMartinezDeveloper&layout=compact&theme=gotham)](https://github.com/anuraghazra/github-readme-stats)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=chrisMartinezDeveloper&layout=compact&theme=gotham)]( https://api.github.com/repos/OWNER/REPO/stats/code_frequency)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=chrisMartinezDeveloper)](https://github.com/anuraghazra/github-readme-stats)
