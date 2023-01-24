@@ -1,4 +1,4 @@
-# Mapty Project 🌐
+# Mapty Project
 
 - Used a HTML and CSS template to code all the JavaScript
 - Udemy Course Project - [The Complete JavaScript Course 2023](https://www.udemy.com/course/the-complete-javascript-course/)
